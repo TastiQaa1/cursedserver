@@ -1,0 +1,670 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CursedServer - Minecraft Server</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Animate.css pentru animatii -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        /* Stiluri personalizate cu accent pe rosu */
+        :root {
+            --primary-red: #dc2626;
+            --dark-red: #991b1b;
+            --light-red: #fca5a5;
+            --dark-bg: #0f172a;
+            --darker-bg: #020617;
+        }
+        
+        body {
+            background-color: var(--darker-bg);
+            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Stiluri pentru scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-red);
+            border-radius: 5px;
+        }
+        
+        /* Animatii personalizate */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .pulse-red {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Stiluri pentru card-uri */
+        .game-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.3);
+            border-color: var(--primary-red);
+        }
+        
+        /* Stiluri pentru butoane */
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-red), var(--dark-red));
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--dark-red), #7f1d1d);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+        }
+        
+        /* Stiluri pentru navbar */
+        .navbar {
+            backdrop-filter: blur(10px);
+            background-color: rgba(2, 6, 23, 0.85);
+            border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+        }
+        
+        /* Efect pentru fundal */
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(220, 38, 38, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(220, 38, 38, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="bg-grid-pattern">
+    <!-- Navbar -->
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="bi bi-moon-stars-fill text-red-500 text-3xl mr-2"></i>
+                <h1 class="text-2xl font-bold text-white">Cursed<span class="text-red-500">Server</span></h1>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-300 hover:text-red-400 transition">Acasă</a>
+                <a href="#gamemodes" class="text-gray-300 hover:text-red-400 transition">Moduri de Joc</a>
+                <a href="#player-count" class="text-gray-300 hover:text-red-400 transition">Jucători Online</a>
+                <a href="#support" class="text-gray-300 hover:text-red-400 transition">Suport</a>
+                <a href="#join" class="btn-primary px-6 py-2 rounded-full font-bold">JOACĂ ACUM</a>
+            </div>
+            
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-button" class="md:hidden text-2xl">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-slate-900 py-4">
+            <div class="container mx-auto px-4 flex flex-col space-y-4">
+                <a href="#home" class="text-gray-300 hover:text-red-400 transition">Acasă</a>
+                <a href="#gamemodes" class="text-gray-300 hover:text-red-400 transition">Moduri de Joc</a>
+                <a href="#player-count" class="text-gray-300 hover:text-red-400 transition">Jucători Online</a>
+                <a href="#support" class="text-gray-300 hover:text-red-400 transition">Suport</a>
+                <a href="#join" class="btn-primary px-6 py-2 rounded-full font-bold text-center">JOACĂ ACUM</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h2 class="text-5xl md:text-6xl font-bold mb-6 animate__animated animate__fadeIn">
+                        Bine ai venit pe <span class="text-red-500">CursedServer</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Cel mai bun server de Minecraft din România! Alege dintre multiple moduri de joc, alătură-te comunității și distrează-te cu prietenii.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                        <a href="#join" class="btn-primary px-8 py-4 rounded-full font-bold text-lg text-center animate__animated animate__pulse animate__infinite">
+                            <i class="bi bi-controller mr-2"></i> Conectează-te Acum
+                        </a>
+                        <a href="#gamemodes" class="border border-red-500 text-red-400 px-8 py-4 rounded-full font-bold text-lg text-center hover:bg-red-500 hover:text-white transition">
+                            <i class="bi bi-grid-3x3-gap mr-2"></i> Modele de Joc
+                        </a>
+                    </div>
+                    
+                    <div class="mt-12 p-6 bg-slate-900/70 rounded-xl border border-red-500/30">
+                        <h3 class="text-2xl font-bold mb-4 text-red-400">
+                            <i class="bi bi-info-circle mr-2"></i> Informații Server
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="flex items-center">
+                                <i class="bi bi-shield-fill-check text-red-500 text-2xl mr-3"></i>
+                                <div>
+                                    <p class="font-bold">Anti-Cheat</p>
+                                    <p class="text-sm text-gray-400">Sistem avansat</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="bi bi-lightning-charge-fill text-yellow-500 text-2xl mr-3"></i>
+                                <div>
+                                    <p class="font-bold">Uptime 99.9%</p>
+                                    <p class="text-sm text-gray-400">Server stabil</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="bi bi-people-fill text-green-500 text-2xl mr-3"></i>
+                                <div>
+                                    <p class="font-bold">Comunitate</p>
+                                    <p class="text-sm text-gray-400">Prietenos & activ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-80 md:h-80 bg-gradient-to-br from-red-900/30 to-transparent rounded-full flex items-center justify-center float-animation">
+                            <div class="w-56 h-56 md:w-72 md:h-72 bg-gradient-to-tr from-red-600/20 to-transparent rounded-full flex items-center justify-center">
+                                <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="Minecraft Logo" class="w-40 h-40 md:w-48 md:h-48">
+                            </div>
+                        </div>
+                        
+                        <!-- Elemente decorative -->
+                        <div class="absolute -top-4 -left-4 w-20 h-20 border border-red-500/50 rounded-lg animate-spin-slow"></div>
+                        <div class="absolute -bottom-4 -right-4 w-16 h-16 border border-red-500/30 rounded-full animate-ping"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Player Count Section -->
+    <section id="player-count" class="py-12 px-4 bg-gradient-to-r from-slate-900 to-slate-800">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-10">
+                <i class="bi bi-person-fill mr-2"></i> Jucători Online
+            </h2>
+            
+            <div class="max-w-2xl mx-auto bg-slate-800/70 rounded-2xl p-8 border border-red-500/30">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-8">
+                    <div class="text-center md:text-left mb-6 md:mb-0">
+                        <h3 class="text-2xl font-bold text-red-400">Statistici în timp real</h3>
+                        <p class="text-gray-400">Urmărește activitatea serverului</p>
+                    </div>
+                    
+                    <div class="bg-red-500/20 px-6 py-3 rounded-full border border-red-500/50">
+                        <p class="text-xl font-bold">
+                            <span id="online-count" class="text-green-400">124</span> / <span id="max-count" class="text-white">200</span>
+                        </p>
+                        <p class="text-sm text-gray-300">Jucători online</p>
+                    </div>
+                </div>
+                
+                <!-- Bară progres jucători -->
+                <div class="mb-6">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-300">Capacitate server</span>
+                        <span class="text-gray-300"><span id="percent-filled">62</span>% complet</span>
+                    </div>
+                    <div class="h-4 bg-slate-700 rounded-full overflow-hidden">
+                        <div id="player-bar" class="h-full bg-gradient-to-r from-red-500 to-red-700 rounded-full" style="width: 62%"></div>
+                    </div>
+                </div>
+                
+                <!-- Server status -->
+                <div class="flex items-center justify-center">
+                    <div class="flex items-center mr-6">
+                        <div class="w-3 h-3 bg-green-500 rounded-full mr-2 pulse-red"></div>
+                        <span class="text-green-400 font-bold">SERVER ONLINE</span>
+                    </div>
+                    <div class="text-gray-400">
+                        <i class="bi bi-clock-history mr-1"></i> Ping: <span class="text-white">24ms</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Modes Section -->
+    <section id="gamemodes" class="py-20 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-4">Moduri de <span class="text-red-500">Joc</span></h2>
+            <p class="text-center text-gray-400 text-xl mb-12 max-w-3xl mx-auto">
+                Alege dintre o varietate de moduri de joc unice, fiecare cu propriile reguli și provocări.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Survival Card -->
+                <div class="game-card rounded-2xl p-6 animate__animated animate__fadeInUp">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="bi bi-tree-fill text-green-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">🌲 Survival</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Trăiește aventura supremă! Construiește, minează, explorează și supraviețuiește într-o lume plină de pericole. Creează-ți baza, dezvoltă-ți skill-urile și joacă alături de o comunitate prietenoasă. Tu decizi cum vrei să trăiești!
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="bi bi-person-fill text-gray-400 mr-1"></i>
+                            <span class="text-gray-300">24 online</span>
+                        </div>
+                        <a href="#" class="text-red-400 hover:text-red-300 font-bold">
+                            Joacă acum <i class="bi bi-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Factions Card -->
+                <div class="game-card rounded-2xl p-6 animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="bi bi-shield-fill text-red-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">⚔️ Factions</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Formează o facțiune, construiește o bază impenetrabilă și cucerește lumea! Fură, luptă, trădează sau creează alianțe strategice. Doar cei mai puternici domină harta!
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="bi bi-person-fill text-gray-400 mr-1"></i>
+                            <span class="text-gray-300">42 online</span>
+                        </div>
+                        <a href="#" class="text-red-400 hover:text-red-300 font-bold">
+                            Joacă acum <i class="bi bi-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- BedWars Card -->
+                <div class="game-card rounded-2xl p-6 animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="bi bi-bed-fill text-blue-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">🛏️ BedWars</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Luptă rapidă, strategie intensă și acțiune non-stop! Apără-ți patul, distruge alte echipe și rămâi ultimul în viață. Construiește, atacă și câștigă!
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="bi bi-person-fill text-gray-400 mr-1"></i>
+                            <span class="text-gray-300">58 online</span>
+                        </div>
+                        <a href="#" class="text-red-400 hover:text-red-300 font-bold">
+                            Joacă acum <i class="bi bi-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Lifesteal Card -->
+                <div class="game-card rounded-2xl p-6 animate__animated animate__fadeInUp">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-pink-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="bi bi-heart-fill text-pink-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">❤️‍🔥 Lifesteal</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Fiecare lovitură contează! Când omori un jucător, îi furi o inimă. Când mori… pierzi una. Poți deveni un zeu sau poți dispărea pentru totdeauna. Ești pregătit pentru cel mai periculos mod de joc?
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="bi bi-person-fill text-gray-400 mr-1"></i>
+                            <span class="text-gray-300">36 online</span>
+                        </div>
+                        <a href="#" class="text-red-400 hover:text-red-300 font-bold">
+                            Joacă acum <i class="bi bi-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- OneBlock Card -->
+                <div class="game-card rounded-2xl p-6 animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="bi bi-square-fill text-yellow-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">🟩 OneBlock</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Începi pe un singur bloc… și construiești o întreagă lume! Minezi blocul magic, evoluezi prin faze și creezi insula ta unică. Totul începe cu un bloc. Ce vei construi?
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="bi bi-person-fill text-gray-400 mr-1"></i>
+                            <span class="text-gray-300">19 online</span>
+                        </div>
+                        <a href="#" class="text-red-400 hover:text-red-300 font-bold">
+                            Joacă acum <i class="bi bi-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- BoxPvP Card -->
+                <div class="game-card rounded-2xl p-6 animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="bi bi-box-fill text-purple-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">🥊 BoxPvP</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Intră în arenă și demonstrează-ți skill-urile PvP! Kit-uri personalizate, dueluri rapide și acțiune non-stop. Fii cel mai bun, domină box-ul și urcă în top!
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="bi bi-person-fill text-gray-400 mr-1"></i>
+                            <span class="text-gray-300">31 online</span>
+                        </div>
+                        <a href="#" class="text-red-400 hover:text-red-300 font-bold">
+                            Joacă acum <i class="bi bi-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Server Section -->
+    <section id="join" class="py-20 px-4 bg-gradient-to-br from-slate-900 to-slate-800">
+        <div class="container mx-auto">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-6">Alătură-te <span class="text-red-500">CursedServer</span> acum!</h2>
+                <p class="text-xl text-gray-300 mb-10">
+                    Conectează-te la serverul nostru și începe aventura într-o lume plină de provocări și distracție!
+                </p>
+                
+                <div class="bg-slate-800/70 rounded-2xl p-8 mb-10 border border-red-500/30">
+                    <h3 class="text-2xl font-bold mb-6 text-red-400">
+                        <i class="bi bi-hdd-network-fill mr-2"></i> Detalii Conectare
+                    </h3>
+                    
+                    <div class="bg-slate-900 p-6 rounded-xl mb-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="text-left mb-4 md:mb-0">
+                                <p class="text-gray-400 mb-1">Adresa server:</p>
+                                <p class="text-2xl font-bold text-green-400">play.cursedserver.ro</p>
+                            </div>
+                            <button id="copy-ip" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition flex items-center justify-center">
+                                <i class="bi bi-clipboard mr-2"></i> Copiază IP
+                            </button>
+                        </div>
+                        
+                        <div class="mt-6 pt-6 border-t border-slate-700">
+                            <p class="text-gray-400 mb-2">Versiune Minecraft:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-700 px-3 py-1 rounded-full">1.16.x</span>
+                                <span class="bg-slate-700 px-3 py-1 rounded-full">1.17.x</span>
+                                <span class="bg-red-500 px-3 py-1 rounded-full font-bold">1.18.x</span>
+                                <span class="bg-slate-700 px-3 py-1 rounded-full">1.19.x</span>
+                                <span class="bg-slate-700 px-3 py-1 rounded-full">1.20.x</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300">
+                        <i class="bi bi-exclamation-triangle-fill text-yellow-500 mr-2"></i>
+                        Pentru cea mai bună experiență, folosește versiunea <span class="text-yellow-400 font-bold">1.18.2</span>
+                    </p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-center space-y-6 md:space-y-0 md:space-x-8">
+                    <a href="https://dsc.gg/cursedservero" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 px-8 py-4 rounded-xl font-bold text-lg transition flex items-center justify-center">
+                        <i class="bi bi-discord mr-3 text-blue-400 text-xl"></i>
+                        Discord Comunitate
+                    </a>
+                    <a href="#support" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 px-8 py-4 rounded-xl font-bold text-lg transition flex items-center justify-center">
+                        <i class="bi bi-question-circle mr-3 text-green-400 text-xl"></i>
+                        Ajutor & Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section id="support" class="py-20 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-4">Suport & <span class="text-red-500">Ajutor</span></h2>
+            <p class="text-center text-gray-400 text-xl mb-12 max-w-3xl mx-auto">
+                Ai întrebări sau probleme? Echipa noastră este aici să te ajute.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Support Card 1 -->
+                <div class="bg-slate-800/70 rounded-2xl p-8 border border-red-500/20">
+                    <div class="w-16 h-16 bg-red-500/20 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="bi bi-question-circle-fill text-red-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mb-4">FAQ & Ghiduri</h3>
+                    <p class="text-gray-300 text-center mb-6">
+                        Găsește răspunsuri la întrebările frecvente și ghiduri pas-cu-pas pentru toate modurile de joc.
+                    </p>
+                    <a href="#" class="block text-center text-red-400 hover:text-red-300 font-bold">
+                        Vezi ghiduri <i class="bi bi-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- Support Card 2 -->
+                <div class="bg-slate-800/70 rounded-2xl p-8 border border-red-500/20">
+                    <div class="w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="bi bi-ticket-detailed-fill text-blue-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mb-4">Tickete Support</h3>
+                    <p class="text-gray-300 text-center mb-6">
+                În caz de probleme tehnice sau alte întrebări, deschide un tichet și echipa noastră te va ajuta în cel mai scurt timp.
+                    </p>
+                    <a href="https://dsc.gg/cursedservero" class="block text-center text-red-400 hover:text-red-300 font-bold">
+                        Deschide tichet <i class="bi bi-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- Support Card 3 -->
+                <div class="bg-slate-800/70 rounded-2xl p-8 border border-red-500/20">
+                    <div class="w-16 h-16 bg-green-500/20 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                        <i class="bi bi-chat-left-text-fill text-green-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mb-4">Forum Comunitate</h3>
+                    <p class="text-gray-300 text-center mb-6">
+                        Discută cu alți jucători, împărtășește idei sau găsește parteneri pentru aventurile tale pe server.
+                    </p>
+                    <a href="https://dsc.gg/cursedservero" class="block text-center text-red-400 hover:text-red-300 font-bold">
+                        Accesează forum <i class="bi bi-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-4">
+                        <i class="bi bi-moon-stars-fill text-red-500 text-3xl mr-2"></i>
+                        <h2 class="text-2xl font-bold">Cursed<span class="text-red-500">Server</span></h2>
+                    </div>
+                    <p class="text-gray-400 max-w-md">
+                        Cel mai bun server de Minecraft din România. Alătură-te comunității noastre și trăiește cele mai epic aventuri!
+                    </p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="https://www.youtube.com/@Luca.M312" class="text-gray-400 hover:text-red-400 text-2xl">
+                        <i class="bi bi-youtube"></i>
+                    </a>
+                    <a href="https://dsc.gg/cursedservero" class="text-gray-400 hover:text-red-400 text-2xl">
+                        <i class="bi bi-discord"></i>
+                    </a>
+                    <a href="https://store.cursedserver.qzz.io/" class="text-gray-400 hover:text-red-400 text-2xl">
+                        <i class="bi bi-shop"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@Luca.M312" class="text-gray-400 hover:text-red-400 text-2xl">
+                        <i class="bi bi-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-slate-800 text-center text-gray-500">
+                <p>&copy; 2023 CursedServer. Toate drepturile rezervate. Acest site nu este afiliat cu Mojang AB.</p>
+                <p class="mt-2">play.cursedserver.qzz.io</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Copy IP functionality
+        document.getElementById('copy-ip').addEventListener('click', function() {
+            const ip = 'play.cursedserver.qzz.io';
+            navigator.clipboard.writeText(ip).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="bi bi-check2 mr-2"></i> Copiat!';
+                this.classList.remove('bg-red-500');
+                this.classList.add('bg-green-500');
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.classList.remove('bg-green-500');
+                    this.classList.add('bg-red-500');
+                }, 2000);
+            });
+        });
+        
+        // Animate elements on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate__animated');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    const animationClass = element.getAttribute('data-animation');
+                    if (animationClass && !element.classList.contains(animationClass)) {
+                        element.classList.add(animationClass);
+                    }
+                }
+            });
+        }
+        
+        // Set initial animation classes
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameCards = document.querySelectorAll('.game-card');
+            gameCards.forEach((card, index) => {
+                if (index >= 3) {
+                    card.classList.add('animate__fadeInUp');
+                }
+            });
+            
+            // Update player count with random values (simulate changes)
+            setInterval(() => {
+                const onlineCount = document.getElementById('online-count');
+                const maxCount = document.getElementById('max-count');
+                const playerBar = document.getElementById('player-bar');
+                const percentFilled = document.getElementById('percent-filled');
+                
+                let current = parseInt(onlineCount.textContent);
+                let max = parseInt(maxCount.textContent);
+                
+                // Simulate small player count changes
+                const change = Math.floor(Math.random() * 5) - 2; // -2 to +2
+                let newCount = current + change;
+                
+                // Keep within reasonable bounds
+                if (newCount < 100) newCount = 100;
+                if (newCount > 180) newCount = 180;
+                
+                onlineCount.textContent = newCount;
+                
+                // Update progress bar
+                const percent = Math.round((newCount / max) * 100);
+                percentFilled.textContent = percent;
+                playerBar.style.width = percent + '%';
+                
+                // Change bar color based on capacity
+                if (percent > 90) {
+                    playerBar.classList.remove('from-red-500', 'to-red-700');
+                    playerBar.classList.add('from-red-700', 'to-red-900');
+                } else {
+                    playerBar.classList.remove('from-red-700', 'to-red-900');
+                    playerBar.classList.add('from-red-500', 'to-red-700');
+                }
+            }, 5000);
+            
+            // Initialize scroll animation
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll(); // Run once on load
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
